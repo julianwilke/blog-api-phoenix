@@ -41,9 +41,9 @@ RUN mix local.hex --force && \
 # install phoenix
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new-1.3.4.ez
 
-# RUN mix deps.get
+RUN mix deps.get
 
 # Compile the project
-# RUN mix do compile
+RUN mix do compile
 
 CMD ["/src/blog/scripts/entrypoint.sh"]
