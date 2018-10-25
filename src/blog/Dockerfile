@@ -31,12 +31,12 @@ COPY --chown=blog:blog . /src/blog
 
 RUN chmod +x /src/blog/scripts/entrypoint.sh
 
+USER blog
+
 # Install hex package manager
 # By using --force, we don’t need to type “Y” to confirm the installation
 RUN mix local.hex --force && \
     mix local.rebar --force
-
-USER blog
 
 # install phoenix
 RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new-1.3.4.ez
