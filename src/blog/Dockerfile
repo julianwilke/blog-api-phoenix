@@ -3,7 +3,8 @@ FROM elixir:1.6
 
 RUN apt-get update && \
   apt-get install -y postgresql-client && \
-  apt-get install -y inotify-tools
+  apt-get install -y inotify-tools && \
+  apt-get install -y manpages
 
 ENV REBAR3_VERSION="3.6.1"
 
@@ -23,22 +24,22 @@ RUN set -xe \
 # Create app directory and copy the Elixir projects into it
 WORKDIR /src/blog
 
-# Install hex package manager
-# By using --force, we don’t need to type “Y” to confirm the installation
-RUN mix local.hex --force && \
-    mix local.rebar --force
-
-# install phoenix
-RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new-1.3.4.ez
-
 RUN addgroup blog && \
-    useradd -r -u 1001 -g blog blog
+    useradd --create-home -u 1001 -g blog blog
 
 COPY --chown=blog:blog . /src/blog
 
 RUN chmod +x /src/blog/scripts/entrypoint.sh
 
+# Install hex package manager
+# By using --force, we don’t need to type “Y” to confirm the installation
+RUN mix local.hex --force && \
+    mix local.rebar --force
+
 USER blog
+
+# install phoenix
+RUN mix archive.install --force https://github.com/phoenixframework/archives/raw/master/phx_new-1.3.4.ez
 
 # RUN mix deps.get
 
