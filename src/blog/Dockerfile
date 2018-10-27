@@ -21,17 +21,16 @@ RUN set -xe \
 	&& install -v ./rebar3 /usr/local/bin/ \
 	&& rm -rf /usr/src/rebar3-src
 
-# Create app directory and copy the Elixir projects into it
-WORKDIR /src/blog
-
 RUN addgroup blog && \
     useradd --create-home -u 1001 -g blog blog
 
 COPY --chown=blog:blog . /src/blog
 
-RUN chmod +x /src/blog/scripts/entrypoint.sh
+RUN chmod 700 /src/blog
 
 USER blog
+
+WORKDIR /src/blog
 
 # Install hex package manager
 # By using --force, we don’t need to type “Y” to confirm the installation
