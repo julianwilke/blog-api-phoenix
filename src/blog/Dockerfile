@@ -22,11 +22,11 @@ RUN set -xe \
 	&& rm -rf /usr/src/rebar3-src
 
 RUN addgroup blog && \
-    useradd --create-home -u 1001 -g blog blog
+    useradd --create-home -u 1000 -g blog blog
 
 COPY --chown=blog:blog . /src/blog
 
-RUN chmod -R 700 /src/blog
+RUN chmod -R 770 /src/blog
 
 USER blog
 
