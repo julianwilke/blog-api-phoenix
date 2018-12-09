@@ -26,7 +26,7 @@ RUN addgroup blog && \
 
 COPY --chown=blog:blog . /src/blog
 
-RUN chmod 700 /src/blog
+RUN chmod -R 700 /src/blog
 
 USER blog
 
