@@ -9,5 +9,5 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-Blog.Repo.insert!(%Blog.Blogs.User{email: "a.mustermann@local.wtl.de", name: "Anna Mustermann", token: "1237ef3f-5393-4710-a682-49b3d8c47789"})
-Blog.Repo.insert!(%Blog.Blogs.User{email: "uko@local.wtl.de", name: "Uwe Kowalsky", token: "8f07ef3f-5393-4710-a682-49b3d8c47c0a"})
+Blog.Repo.insert!(%Blog.BlogContext.User{email: "a.mustermann@local.wtl.de", name: "Anna Mustermann"})
+Blog.Repo.insert!(%Blog.BlogContext.User{email: "uko@local.wtl.de", name: "Uwe Kowalsky"})
