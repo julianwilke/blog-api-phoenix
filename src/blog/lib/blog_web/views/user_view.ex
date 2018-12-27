@@ -3,7 +3,7 @@ defmodule BlogWeb.UserView do
   alias BlogWeb.UserView
 
   def render("index.json", %{users: users}) do
-    render_many(users, UserView, "user.json")
+    %{users: render_many(users, UserView, "user.json")}
   end
 
   def render("show.json", %{user: user}) do
