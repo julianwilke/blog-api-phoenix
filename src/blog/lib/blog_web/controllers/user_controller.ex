@@ -25,8 +25,10 @@ defmodule BlogWeb.UserController do
     render(conn, "show.json", user: user)
   end
 
-  def update(conn, %{"id" => id, "user" => user_params}) do
-    user = BlogContext.get_user!(id)
+  def update(conn, params) do
+    user = BlogContext.get_user!(params["id"])
+
+    user_params = Map.delete(params, :id)
 
     with {:ok, %User{} = user} <- BlogContext.update_user(user, user_params) do
       render(conn, "show.json", user: user)
