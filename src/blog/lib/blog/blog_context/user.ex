@@ -16,7 +16,7 @@ defmodule Blog.BlogContext.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :token])
-    |> validate_required([:name, :email, :token])
+    |> cast(attrs, [:name, :email])
+    |> validate_required([:name, :email])
   end
 end
