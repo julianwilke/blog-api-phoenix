@@ -2,9 +2,11 @@ defmodule Blog.BlogContext.Comment do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Blog.BlogContext.Post
 
   schema "comments" do
     field :message, :string
+    belongs_to :posts, Post
 
     timestamps()
   end

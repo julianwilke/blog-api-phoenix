@@ -4,11 +4,13 @@ defmodule Blog.BlogContext.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Blog.BlogContext.Post
 
   schema "users" do
     field :email, :string
     field :name, :string
     field :token, Ecto.UUID, [autogenerate: true]
+    has_many :posts, Post
 
     timestamps()
   end
