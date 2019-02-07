@@ -2,8 +2,11 @@ defmodule BlogWeb.CommentView do
   use BlogWeb, :view
   alias BlogWeb.CommentView
 
-  def render("index.json", %{comments: comments}) do
-    %{comments: render_many(comments, CommentView, "comment.json")}
+  def render("index.json", %{comments: comments, post_id: post_id}) do
+    %{
+      postId: post_id,
+      comments: render_many(comments, CommentView, "comment.json")
+    }
   end
 
   def render("show.json", %{comment: comment}) do

@@ -6,9 +6,9 @@ defmodule BlogWeb.CommentController do
 
   action_fallback BlogWeb.FallbackController
 
-  def index(conn, _params) do
+  def index(conn, params) do
     comments = BlogContext.list_comments()
-    render(conn, "index.json", comments: comments)
+    render(conn, "index.json", comments: comments, post_id: params["post_id"])
   end
 
   def create(conn, comment_params) do
