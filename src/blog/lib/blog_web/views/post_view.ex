@@ -3,7 +3,7 @@ defmodule BlogWeb.PostView do
   alias BlogWeb.PostView
 
   def render("index.json", %{posts: posts}) do
-    render_many(posts, PostView, "post.json")
+    %{ posts: render_many(posts, PostView, "post.json") }
   end
 
   def render("show.json", %{post: post}) do
