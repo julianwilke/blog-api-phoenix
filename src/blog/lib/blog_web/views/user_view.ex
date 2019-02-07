@@ -15,4 +15,9 @@ defmodule BlogWeb.UserView do
       name: user.name,
       email: user.email}
   end
+
+  def render("user_without_email.json", %{user: user}) do
+    %{id: user.id,
+      name: user.name}
+  end
 end
