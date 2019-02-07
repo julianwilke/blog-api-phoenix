@@ -8,7 +8,7 @@ defmodule Blog.BlogContext.Comment do
 
   schema "comments" do
     field :message, :string
-    belongs_to :posts, Post
+    belongs_to :post, Post
     belongs_to :user, User
 
     timestamps()
