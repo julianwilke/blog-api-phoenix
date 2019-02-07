@@ -1,6 +1,7 @@
 defmodule BlogWeb.CommentView do
   use BlogWeb, :view
   alias BlogWeb.CommentView
+  alias BlogWeb.UserView
 
   def render("index.json", %{comments: comments, post_id: post_id}) do
     %{
@@ -14,7 +15,10 @@ defmodule BlogWeb.CommentView do
   end
 
   def render("comment.json", %{comment: comment}) do
+    comment = Blog.Repo.preload(comment, :user)
+
     %{id: comment.id,
-      message: comment.message}
+      message: comment.message,
+      author: render_one(comment.user, UserView, "user.json")}
   end
 end

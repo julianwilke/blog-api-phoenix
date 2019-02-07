@@ -11,8 +11,11 @@ defmodule BlogWeb.PostView do
   end
 
   def render("post.json", %{post: post}) do
+    post = Blog.Repo.preload(post, :comments)
+
     %{id: post.id,
       message: post.message,
-      author: render_one(post.user, BlogWeb.UserView, "user_without_email.json")}
+      author: render_one(post.user, BlogWeb.UserView, "user.json"),
+      comments: render_many(post.comments, BlogWeb.CommentView, "comment.json")}
   end
 end
