@@ -24,6 +24,7 @@ defmodule BlogWeb.CommentController do
   end
 
   def show(conn, %{"id" => id}) do
+    {id, _remainder_of_binary} = Integer.parse(id)
     comment = BlogContext.get_comment!(id)
     render(conn, "show.json", comment: comment)
   end

@@ -177,6 +177,7 @@ defmodule Blog.BlogContext do
     post
     |> Post.changeset(attrs)
     |> Changeset.put_assoc(:user, user)
+    |> Changeset.validate_required(:message)
     |> Repo.update()
   end
 

@@ -21,6 +21,7 @@ defmodule BlogWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
+    {id, _remainder_of_binary} = Integer.parse(id)
     user = BlogContext.get_user!(id)
     render(conn, "show.json", user: user)
   end
