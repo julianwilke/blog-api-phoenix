@@ -1,11 +1,8 @@
 defmodule BlogWeb.PostController do
   use BlogWeb, :controller
 
-  import Ecto.Query
-
   alias Blog.BlogContext
   alias Blog.BlogContext.Post
-  alias Ecto.Changeset
   alias Blog.Repo
 
   action_fallback BlogWeb.FallbackController
