@@ -28,7 +28,7 @@ COPY --chown=blog:blog . /src/blog
 
 RUN chmod -R 770 /src/blog
 
-USER blog
+USER root
 
 WORKDIR /src/blog
 

@@ -4,7 +4,7 @@ version: '3'
 # Containers we are going to run
 services:
   # Our Phoenix container
-  blog:
+  api:
     # The build parameters for this container.
     build:
       context: ./src/blog
@@ -20,7 +20,7 @@ services:
       PGHOST: db
     ports:
     # Mapping the port to make the Phoenix app accessible outside of the container
-    - "4000:4000"
+    - "80:80"
     depends_on:
     # The db container needs to be started before we start this container
     - db
@@ -38,6 +38,11 @@ services:
     - "5432:5432"
     volumes:
     - pgdata:/var/lib/postgresql/data
+  chakram:
+    image: registry.gitlab.com/bmaximilian/wtl-academy-chakram-tests/chakram:latest
+    command: /wait-for-it.sh -t 60 api:80 -- npm run test
+    networks:
+      default:
 # Define the volumes
 volumes:
   pgdata:
