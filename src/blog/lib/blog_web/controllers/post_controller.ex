@@ -1,6 +1,8 @@
 defmodule BlogWeb.PostController do
   use BlogWeb, :controller
 
+  import Ecto.Query
+
   alias Blog.BlogContext
   alias Blog.BlogContext.Post
 
@@ -8,11 +10,17 @@ defmodule BlogWeb.PostController do
 
   def index(conn, _params) do
     posts = BlogContext.list_posts()
+    posts = Blog.Repo.preload(posts, :user)
+    # add comments query
     render(conn, "index.json", posts: posts)
   end
 
   def create(conn, %{"post" => post_params}) do
     with {:ok, %Post{} = post} <- BlogContext.create_post(post_params) do
+      # user = from u in "users", where: u.token == post_params.token, select: u
+
+      # IO.puts(user)
+
       conn
       |> put_status(:created)
       |> put_resp_header("location", post_path(conn, :show, post))
@@ -22,6 +30,7 @@ defmodule BlogWeb.PostController do
 
   def show(conn, %{"id" => id}) do
     post = BlogContext.get_post!(id)
+    post = Blog.Repo.preload(post, :user)
     render(conn, "show.json", post: post)
   end
 
