@@ -252,9 +252,14 @@ defmodule Blog.BlogContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(attrs \\ %{}) do
+  def create_comment(token, post, attrs \\ %{}) do
+    user_query = from u in Blog.BlogContext.User, where: u.token == ^token, select: u
+    user = Blog.Repo.one!(user_query)
+
     %Comment{}
     |> Comment.changeset(attrs)
+    |> Changeset.put_assoc(:user, user)
+    |> Changeset.put_assoc(:post, post)
     |> Repo.insert()
   end
 
