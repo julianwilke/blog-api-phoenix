@@ -5,21 +5,28 @@ defmodule BlogWeb.PostController do
 
   alias Blog.BlogContext
   alias Blog.BlogContext.Post
+  alias Ecto.Changeset
+  alias Blog.Repo
 
   action_fallback BlogWeb.FallbackController
 
   def index(conn, _params) do
     posts = BlogContext.list_posts()
-    posts = Blog.Repo.preload(posts, :user)
+    posts = Repo.preload(posts, :user)
     # add comments query
     render(conn, "index.json", posts: posts)
   end
 
-  def create(conn, %{"post" => post_params}) do
+  def create(conn, post_params) do
     with {:ok, %Post{} = post} <- BlogContext.create_post(post_params) do
-      # user = from u in "users", where: u.token == post_params.token, select: u
+      post = Repo.preload(post, :user)
 
-      # IO.puts(user)
+      token = conn |> get_req_header("token") |> List.first()
+      user_query = from u in Blog.BlogContext.User, where: u.token == ^token, select: u
+      user = Blog.Repo.one!(user_query)
+      changeset = post |> Changeset.change() |> Changeset.put_assoc(:user, user)
+
+      post = Repo.update!(changeset)
 
       conn
       |> put_status(:created)
