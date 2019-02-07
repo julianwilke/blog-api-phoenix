@@ -4,6 +4,7 @@ defmodule Blog.BlogContext do
   """
 
   import Ecto.Query, warn: false
+  alias Ecto.Changeset
   alias Blog.Repo
 
   alias Blog.BlogContext.User
@@ -145,9 +146,13 @@ defmodule Blog.BlogContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_post(attrs \\ %{}) do
+  def create_post(token, attrs \\ %{}) do
+    user_query = from u in Blog.BlogContext.User, where: u.token == ^token, select: u
+    user = Blog.Repo.one!(user_query)
+
     %Post{}
     |> Post.changeset(attrs)
+    |> Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 
@@ -163,9 +168,15 @@ defmodule Blog.BlogContext do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_post(%Post{} = post, attrs) do
+  def update_post(%Post{} = post, token, attrs) do
+    post = Blog.Repo.preload(post, :user)
+
+    user_query = from u in Blog.BlogContext.User, where: u.token == ^token, select: u
+    user = Blog.Repo.one!(user_query)
+
     post
     |> Post.changeset(attrs)
+    |> Changeset.put_assoc(:user, user)
     |> Repo.update()
   end
 

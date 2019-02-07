@@ -18,16 +18,9 @@ defmodule BlogWeb.PostController do
   end
 
   def create(conn, post_params) do
-    with {:ok, %Post{} = post} <- BlogContext.create_post(post_params) do
-      post = Repo.preload(post, :user)
+    token = conn |> get_req_header("token") |> List.first()
 
-      token = conn |> get_req_header("token") |> List.first()
-      user_query = from u in Blog.BlogContext.User, where: u.token == ^token, select: u
-      user = Blog.Repo.one!(user_query)
-      changeset = post |> Changeset.change() |> Changeset.put_assoc(:user, user)
-
-      post = Repo.update!(changeset)
-
+    with {:ok, %Post{} = post} <- BlogContext.create_post(token, post_params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", post_path(conn, :show, post))
@@ -41,10 +34,11 @@ defmodule BlogWeb.PostController do
     render(conn, "show.json", post: post)
   end
 
-  def update(conn, %{"id" => id, "post" => post_params}) do
-    post = BlogContext.get_post!(id)
+  def update(conn, post_params) do
+    post = BlogContext.get_post!(post_params["id"])
+    token = conn |> get_req_header("token") |> List.first()
 
-    with {:ok, %Post{} = post} <- BlogContext.update_post(post, post_params) do
+    with {:ok, %Post{} = post} <- BlogContext.update_post(post, token, post_params) do
       render(conn, "show.json", post: post)
     end
   end
